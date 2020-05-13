@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 export default class ProductList extends Component {
     render() {
         return (
-            <table className="table tablee table-striped table-bordered table-hover text-center">
+            <table className="table tablee table-striped table-bordered text-center">
                 <thead className='thead-dark '>
                   <tr>
                     <th scope="col">S.No</th>

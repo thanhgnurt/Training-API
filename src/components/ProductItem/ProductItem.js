@@ -15,8 +15,8 @@ export default class ProductItem extends Component {
               </div>
             </td>
             <td>
-              <button className='btn btn-primary mr-2 pl-4 pr-4'  > Edit </button>
-              <button className='btn btn-danger' >Delete</button>
+              <button className='btn btn-outline-primary mr-2 pl-4 pr-4'  > Edit </button>
+              <button className='btn btn-outline-danger' >Delete</button>
             </td>
           </tr>
       
