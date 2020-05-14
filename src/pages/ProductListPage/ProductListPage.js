@@ -3,27 +3,17 @@ import ProductList from "../../components/ProductList/ProductList";
 import ProductItem from "../../components/ProductItem/ProductItem";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import * as actions from './../../actions/index'
 
 import callApi from "./../../utils/apiCaller";
 class ProductListPage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            products: [],
-        };
-    }
     componentDidMount() {
-        callApi("products", "GET", []).then((response) => {
-            this.setState({
-                products: response.data,
-            });
-        });
+        this.props.fetchProductsRequest()
     }
-
     onDelete = (id) => {
-        let {products} = this.state 
+        let { products } = this.props
         let index = this.findIndex(products, id)
-    
+
         callApi(`products/${id}`, "DELETE", []).then((response) => {
             if (response.status === 200) { //ok
                 if (index !== -1) {
@@ -32,14 +22,15 @@ class ProductListPage extends Component {
                         products
                     })
                 }
-        
+
 
             }
-            
+
         });
     };
 
     findIndex = (products, id) => {
+
         let result = -1;
         products.forEach((product, index) => {
             if ((product.id === id)) {
@@ -50,9 +41,11 @@ class ProductListPage extends Component {
     };
 
     render() {
-        // let products = []
-        // let {products} = this.props
-        let { products } = this.state;
+
+        let { products } = this.props
+
+        console.log(products);
+
 
         return (
             <div className="col-sm-12">
@@ -95,4 +88,11 @@ const mapStateToProps = (state) => {
         products: state.products,
     };
 };
-export default connect(mapStateToProps, null)(ProductListPage);
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        fetchProductsRequest: () => {
+            dispatch(actions.fetchProductsRequest())
+        },
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ProductListPage);

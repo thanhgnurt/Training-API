@@ -1,26 +1,18 @@
-var initialState = [
-  {
-    id: 1,
-    name: "iphone 11",
-    price: 650,
-    status: true,
-  },
-  {
-    id: 2,
-    name: "Samsung Galaxy Note 10",
-    price: 650,
-    status: true,
-  },
-  {
-    id: 3,
-    name: "Huewei P20 Pro",
-    price: 650,
-    status: true,
-  },
-];
+import * as actionTypes from "./../constant/actionTypes"
+
+var initialState = []
 
 var products = (state = initialState, action) => {
-  return [...state];
+    switch (action.type) {
+        case actionTypes.FETCH_PRODUCTS:
+            state= action.products
+            
+            return [...state]
+            
+
+        default:
+            return [...state]
+    }
 };
 
 export default products;
