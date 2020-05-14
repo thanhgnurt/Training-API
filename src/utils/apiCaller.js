@@ -7,6 +7,6 @@ export default function callApi(endpoint, method = "GET", data) {
     url: `${Config.API_URL_DATA}/${endpoint}`,
     data,
   }).catch((error) => {
-    console.log(error);
+    alert('please delete again')
   });
 }

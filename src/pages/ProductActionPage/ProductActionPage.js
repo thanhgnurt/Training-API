@@ -6,10 +6,34 @@ export default class ProductActionPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: '',
             name: "",
             price: "",
             status: false,
         };
+    }
+
+    componentDidMount(){
+        let {match} = this.props
+        let id = 0
+        if (match) {
+            
+             id = match.params.id
+             callApi(`products/${id}`, 'GET', null).then(response =>{
+            
+            
+            let data = response.data
+            
+            this.setState({
+                id: data.id,
+                name: data.name,
+                price: data.price,
+                status: data.status
+            })
+            
+        })
+        }
+        
     }
     onChange = (event) => {
         let target = event.target;
@@ -22,13 +46,35 @@ export default class ProductActionPage extends Component {
 
     onSubmit = (event) => {
         event.preventDefault();
-        let data = this.state;
-        // let { history } = this.props
+        let {id}= this.state
+        let data = this.state
+        let { history } = this.props
+        
+        if (id) {
+            console.log(id);
+            callApi(`products/${id}`, 'PUT',{
+               
+                name: data.name,
+                price: data.price,
+                status: data.status
+            }).then(response=>{
+                history.goBack()
+            })
+            
+        } else {
+             data = {
+            name: this.state.name,
+            price:this.state.price,
+            status:this.state.status
+        }
+        
         callApi("products", "POST", data).then(response => {
-            // history.goBack()
-            console.log(response);
+            history.goBack()
+        
 
         })
+        }
+       
 
     }
     render() {
@@ -45,7 +91,7 @@ export default class ProductActionPage extends Component {
                         aria-describedby="helpId"
                         onChange={this.onChange}
                         name="name"
-                        value={this.state.value}
+                        value={this.state.name}
                     />
                     <label>Price:</label>
                     <input
@@ -54,7 +100,7 @@ export default class ProductActionPage extends Component {
                         aria-describedby="helpId"
                         onChange={this.onChange}
                         name="price"
-                        value={this.state.value}
+                        value={this.state.price}
                     />
                     <label>Status :</label>
                     <div className="form-check">
@@ -62,10 +108,10 @@ export default class ProductActionPage extends Component {
                             <input
                                 type="checkbox"
                                 className="form-check-input"
-                                defaultChecked
+                                checked={this.state.status}
                                 onChange={this.onChange}
                                 name="status"
-                                value={this.state.status}
+                                
                             />
               Stocking
             </label>
@@ -73,9 +119,9 @@ export default class ProductActionPage extends Component {
                     <div className='row'>
                         <div onClick={this.onSubmit}>
 
-                        <Link to='product-list' type="submit" className="btn btn-primary mt-3 mx-2">
+                        <button  type="submit" className="btn btn-primary mt-3 mx-2">
                             Submit
-            </Link>
+            </button>
                     </div>
                     <div>
 
